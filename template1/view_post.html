@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+
+
+    <title> </title>
+	<style type ="text/css">
+		form{
+			width:300px;
+		}
+		.form-field{
+			width:100%;
+		}
+		input{
+			margin-bottom:5px;
+		}
+		.tdStyle{
+			background-image:url("/static/images/gmail.jpg");
+			}
+
+
+
+
+
+.split {
+  height: 100%;
+  width: 50%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+ 
+  padding-top: 20px;
+}
+
+
+.left {
+  left: 0;
+ 
+}
+
+
+.right {
+  right: 0;
+  
+}
+
+
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
+}
+
+</style>
+
+
+</head>
+  <body class="tdStyle">
+    <h1><center><b>VIEW POST HERE<b><center></h1>
+	<div class="split left">
+	<div class="centered" style="padding-top:110px">
+	<form action="fff " method="post" id="viewimg">
+	{%csrf_token%}
+	<center>
+	
+	 <textarea id="textview" rows="20" cols="50" align="center"></textarea><br>
+	 <input type="submit" name="" value="VIEW POST" id="viewnow"><br>
+	</div>
+	<div class ="split right">
+	<div class="centered" style="padding-top:110px">
+	 POST YOU LIKED(ENTER NAME):<input type="text" name="liked" value="" class="form-field"><br>
+	<input type="submit" name="" value="LIKE POST" id="like"><br>		
+	
+	
+	
+</form>
+
+</div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+			  src="https://code.jquery.com/jquery-3.4.1.min.js"
+			  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+			  crossorigin="anonymous"> //this is the code for running ajax it should be 3.4.1
+		</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+<script type="text/javascript">
+
+$.ajaxSetup({
+     beforeSend: function(xhr, settings) {
+         function getCookie(name) {
+             var cookieValue = null;
+             if (document.cookie && document.cookie != '') {
+                 var cookies = document.cookie.split(';');
+                 for (var i = 0; i < cookies.length; i++) {
+                     var cookie = jQuery.trim(cookies[i]);
+                     // Does this cookie string begin with the name we want?
+                     if (cookie.substring(0, name.length + 1) == (name +'=')) {
+                         cookieValue =decodeURIComponent(cookie.substring(name.length + 1));
+                         break;
+                     }
+                 }
+             }
+             return cookieValue;
+         }
+         if (!(/^http:.*/.test(settings.url) ||
+/^https:.*/.test(settings.url))) {
+             // Only send the token to relative URLs i.e. locally.
+             xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+         }
+     }
+});
+
+$("#viewnow").click(function(e){ 
+	e.preventDefault(); 
+	$.ajax({
+	url:"viewpostfn",
+	type:"post",
+	datatype:"json", 
+	data:$("#viewimg").serialize(), 
+	success:function(data)
+		{
+			if(data.status)     
+			{
+			$("#textview").val(data.val1)
+			}	
+			else
+			{
+			alert("enter a valid name");
+			}
+		},
+		error:function()
+		{
+		alert("connection failed");
+		}
+});
+});
+
+
+
+
+$("#like").click(function(e){
+	e.preventDefault(); 
+	$.ajax({
+	url:"likefn",
+	type:"POST",
+	datatype:"json", 
+	data:$("#viewimg").serialize(), 
+	success:function(data)
+		{
+	
+			if(data.yes)     
+			{
+			alert("your like is added");
+			window.location.replace("upload")
+			}
+			else if(data.no)
+			{
+			alert("your like is already added");
+			window.location.replace("upload")
+			}	
+			else
+			{
+			alert("failed to receive");
+		
+			}
+		},
+		error:function()
+		{
+		alert("connection failed");
+		}
+});
+});
+
+
+</script>
+</body>
+</html>
+

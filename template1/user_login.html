@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+
+
+    <title> </title>
+	<style type ="text/css">
+		form{
+			width:300px;
+		}
+		.form-field{
+			width:100%;
+		}
+		input{
+			margin-bottom:5px;
+		}
+		.tdStyle{
+			background-image:url("/static/images/gmail.jpg");
+			}
+
+	</style>
+
+
+</head>
+  <body class="tdStyle">
+    <h1><center><b>LOGIN PAGE<b> <center></h1>
+	<div class="container" style="padding-top:110px">
+	<form action=" " method="post" id="user">
+	{%csrf_token%}
+	ENTER THE USER NAME:<input type="text" name="users" value="" class="form-field"><br>
+        ENTER THE PASSWORD:<input type="password" name="psd1"  value="" class="form-field"><br>
+         <input type="submit" name="login" value="LOGIN" id="correct"><br>
+			
+	 <a href ="signup" >SIGN UP </a>		
+	
+	
+</form>
+
+</div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+			  src="https://code.jquery.com/jquery-3.4.1.min.js"
+			  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+			  crossorigin="anonymous"> //this is the code for running ajax it should be 3.4.1
+		</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+<script type="text/javascript">
+
+$.ajaxSetup({
+     beforeSend: function(xhr, settings) {
+         function getCookie(name) {
+             var cookieValue = null;
+             if (document.cookie && document.cookie != '') {
+                 var cookies = document.cookie.split(';');
+                 for (var i = 0; i < cookies.length; i++) {
+                     var cookie = jQuery.trim(cookies[i]);
+                     // Does this cookie string begin with the name we want?
+                     if (cookie.substring(0, name.length + 1) == (name +'=')) {
+                         cookieValue =decodeURIComponent(cookie.substring(name.length + 1));
+                         break;
+                     }
+                 }
+             }
+             return cookieValue;
+         }
+         if (!(/^http:.*/.test(settings.url) ||
+/^https:.*/.test(settings.url))) {
+             // Only send the token to relative URLs i.e. locally.
+             xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+         }
+     }
+});
+
+$("#correct").click(function(e){ 
+	e.preventDefault(); 
+	$.ajax({
+	url:"userloginfn",
+	type:"post",
+	datatype:"json", 
+	data:$("#user").serialize(), 
+	success:function(data)
+		{
+			
+	
+			if(data.val1)     
+			{
+			
+			window.location.replace("upload")
+			}
+			else if(data.val2==0)
+			{
+			alert("wrong password");
+			}	
+			else
+			{
+			alert("login failed");
+			}
+		},
+		error:function()
+		{
+		alert("connection failed");
+		}
+});
+});
+
+</script>
+</body>
+</html>
+
